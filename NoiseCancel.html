@@ -4,46 +4,81 @@
 		<meta charset="utf-8">
 		 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	    <title></title>
-	    <link rel="stylesheet" href="style.css" type="text/css" />
+	    <link rel="stylesheet" href="css/style.css" type="text/css" />
 	    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 	    <!-- <link rel="stylesheet" href="ress.min.css" type="text/css" /> -->
 	    
 	    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+	    <!-- plugin -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="crossorigin=""></script>
+
+        <script src="libraries/leaflet.sprite.js"></script>
+
+
+	    <!-- firebase周り -->
+		<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+		<script>
+		  // Your web app's Firebase configuration
+		  var firebaseConfig = {
+		    apiKey: "AIzaSyDsA9LScB0NN97vixVtPfZLj3ybWGfp350",
+		    authDomain: "mimie-30c91.firebaseapp.com",
+		    databaseURL: "https://mimie-30c91.firebaseio.com",
+		    projectId: "mimie-30c91",
+		    storageBucket: "mimie-30c91.appspot.com",
+		    messagingSenderId: "516840190931",
+		    appId: "1:516840190931:web:a1165305c8c7d8f5"
+		  };
+		  // Initialize Firebase
+		  firebase.initializeApp(firebaseConfig);
+		</script>
+        
+        
+
+
 	</head>
-	<body>
+	<body onload="init()">
 		<header>
 			<p id="noise-cancel">Noise Cancel</p>
 			<p id="noise-map">Noise Map</p>
 		</header>
 		<div class="main">
 			<!-- プラグイン選択 -->
-			<button id="button1" type="submit" name="Car" type="Car" onclick="noise01()">
-				<img src="image/icon1.png" width="50%" height="50%"><br>
+			<button id="button1" type="submit" name="Car" type="Car">
+				<img id="img1_m" src="image/car_mono.png" width="50%" height="45%"><br>
+				<img id="img1_c" src="image/car_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Car</p>
 				<p id="nowplaying1"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
-			<button id="button2" type="submit" name="Crowds" type="Crowds" onclick="noise02()">
-				<img src="image/icon2.png" width="50%" height="50%"><br>
+			<button id="button2" type="submit" name="Crowds" type="Crowds">
+				<img id="img2_m" src="image/crowds_mono.png" width="50%" height="45%"><br>
+				<img id="img2_c" src="image/crowds_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Crowds</p>
 				<p id="nowplaying2"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
-			<button id="button3" type="submit" name="Human" type="Human" onclick="noise03()">
-				<img src="image/icon3.png" width="50%" height="50%"><br>
+			<button id="button3" type="submit" name="Human" type="Human">
+				<img id="img3_m" src="image/man_mono.png" width="50%" height="45%"><br>
+				<img id="img3_c" src="image/man_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Human Voice</p>
 				<p id="nowplaying3"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
-			<button id="button4" type="submit" name="Animal" type="Animal" onclick="noise04()">
-				<img src="image/icon4.png" width="50%" height="50%"><br>
+			<button id="button4" type="submit" name="Animal" type="Animal">
+				<img id="img4_m" src="image/cat_mono.png" width="50%" height="45%" ><br>
+				<img id="img4_c" src="image/cat_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Animal</p>
 				<p id="nowplaying4"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
-			<button id="button5" type="submit" name="Construction" type="Construction" onclick="noise05()">
-				<img src="image/icon5.png" width="50%" height="50%"><br>
+			<button id="button5" type="submit" name="Construction" type="Construction">
+				<img id="img5_m" src="image/const_mono.png" width="50%" height="45%" ><br>
+				<img id="img5_c" src="image/const_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Construction</p>
 				<p id="nowplaying5"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
-			<button id="button6" type="submit" name="Weather" type="Weather" onclick="noise06()">
-				<img src="image/icon6.png" width="50%" height="50%"><br>
+			<button id="button6" type="submit" name="Weather" type="Weather">
+				<img id="img6_m" src="image/weather_mono.png" width="50%" height="45%" ><br>
+				<img id="img6_c" src="image/weather_col.png" width="50%" height="45%"><br>
 				<p class="btntext">Weather</p>
 				<p id="nowplaying6"><i class="fas fa-check"></i> Now Playing...</p>
 			</button>
@@ -92,6 +127,9 @@
 		<!-- オーバーレイ -->
 		<div id="overlay"></div>
 
+		<!-- マップ -->
+		<div id="map_101" style=""></div>
+
 
 		<!-- 再生中バー -->
 		<!-- <div class="playber">
@@ -135,6 +173,7 @@
 			</button>
 		</footer>
 	</body>
-	<script type="text/javascript" src= "script.js"></script>
+	<script type="text/javascript" src= "js/script.js"></script>
+	<script src="js/main.js"></script>
 </html>
 

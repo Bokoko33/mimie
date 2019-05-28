@@ -19,6 +19,36 @@ $(function(){
 		}else{
 			//再生１回目
 			$('#nowplaying'+num).css('display','block');
+			$('#img'+num+'_m').css('display','none');
+			$('#img'+num+'_c').css('display','block');
+
+			var noiseName;
+			switch(num){
+				case 1:
+				noiseName = "car_noise";
+				break;
+
+				case 2:
+				noiseName = "crowds_noise";
+				break;
+
+				case 3:
+				noiseName = "human_noise";
+				break;
+
+				case 4:
+				noiseName = "animal_noise";
+				break;
+
+				case 5:
+				noiseName = "construction_noise";
+				break;
+
+				case 6:
+				noiseName = "rain_noise";
+			}
+
+			setMarkerHere(noiseName);
 		}
 		
 		$('#playIcon'+popNow).css('display','none');
@@ -37,6 +67,9 @@ $(function(){
 		$('#playIcon'+popNow).css('display','block');
 		$('#nowplaying'+popNow).css('display','none');
 
+		$('#img'+popNow+'_m').css('display','block');
+		$('#img'+popNow+'_c').css('display','none');
+
 	});
 
 	//キャンセル再開
@@ -44,6 +77,9 @@ $(function(){
 		$('#playIcon'+popNow).css('display','none');
 		$('#pauseIcon'+popNow).css('display','block');
 		$('#nowplaying'+popNow).css('display','block');
+
+		$('#img'+popNow+'_m').css('display','none');
+		$('#img'+popNow+'_m').css('display','block');
 
 	});
 
@@ -54,6 +90,7 @@ $(function(){
 		$('#noise-map').css('display','none');
 
 		$('.main').css('display','block');
+		$('#map_101').css('display','none');
 
 		$('#L-on').css('display','block');
 		$('#L-off').css('display','none');
@@ -65,6 +102,7 @@ $(function(){
 		$('#noise-map').css('display','block');
 
 		$('.main').css('display','none');
+		$('#map_101').css('display','block');
 
 		$('#L-on').css('display','none');
 		$('#L-off').css('display','block');
@@ -72,9 +110,6 @@ $(function(){
 		$('#R-off').css('display','none');
 	});
 });
-
-
-
 
 
 
