@@ -79,7 +79,7 @@ $(function(){
 		$('#nowplaying'+popNow).css('display','block');
 
 		$('#img'+popNow+'_m').css('display','none');
-		$('#img'+popNow+'_m').css('display','block');
+		$('#img'+popNow+'_c').css('display','block');
 
 	});
 

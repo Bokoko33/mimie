@@ -17,6 +17,7 @@ header{
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 2;
 }
 header p{
 	position: relative;
@@ -39,10 +40,12 @@ header p{
 	height:210px;
 	border:solid 1px #f8f8f8;
 	background-color: white;
+	position: relative;
 
 }
 .main button img{
-	padding-bottom: 10px;
+	padding-bottom:20px;
+	
 }
 
 #button1,#button2{
@@ -65,14 +68,15 @@ header p{
 #nowplaying1,#nowplaying2,#nowplaying3,#nowplaying4,#nowplaying5,#nowplaying6{
 	color: #00acc9;
 	display: none;
-	position: relative;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 10px;
+	margin:0 auto;
 	/*bottom:0;*/
 
 }
 
-.popup{
-	
-}
 #popup1,#popup2,#popup3,#popup4,#popup5,#popup6{
 	background-color: white;
 	display: inline-block;
@@ -85,7 +89,7 @@ header p{
 	width:100%;
 	height:15%;
 	text-align: center;
-	z-index: 9;
+	z-index: 5;
 
 	display: none;
 }
@@ -134,15 +138,16 @@ header p{
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
+    z-index: 4;
 }
 
 #map_101{
 	width: 100%;
 	height: 100%;
 	display: none;
-
-	z-index: -1;
+	z-index: 0;
+	margin-top: 50px;
+	/*margin-bottom: 60px;*/
 }
 
 /*.playber{
@@ -178,6 +183,8 @@ footer{
 	position: fixed;
 	left: 0;
 	bottom: 0;
+
+	z-index: 3;
 }
 
 footer button{
