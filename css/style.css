@@ -96,11 +96,15 @@ header p{
 .popup p{
 	position: relative;
 	top: 5px;
+	left: 0;
+	right: 0;
+	margin:0 auto;
 	width: 90%;
 	font-size: 32px;
 	font-weight: 200;
 	padding:20px 0;
 	border-bottom: solid 1px #aaaaaa;
+	text-align: center;
 }
 /*.popup button{
 	width: 40px;
