@@ -37,6 +37,8 @@ header p{
     position: absolute;
     left: 50%;
     margin-left: -512px;
+
+    overflow: hidden;
 }
 #mask{
 	position: absolute;
