@@ -5,7 +5,7 @@ $(function(){
 	$('#opening').on('ended',function(){
 		$('header,footer,.main').fadeIn(2000);
 		$('#opening,#mask').remove();  
-	})
+	});
 
 
 
@@ -15,12 +15,12 @@ $(function(){
 
 		var num = btnId.slice(-1); //idの末尾(＝数字)
 
-		var isPlay = $('#nowplaying'+num).css("display")!=="none"; //そのプリセットが再生中かどうか
+		var isPlay = $('#nowplaying'+num).css('display')!=='none'; //そのプリセットが再生中かどうか
 
 		if(isPlay){
 			$('#overlay').css('display','block');
 			$('#popup'+num).slideDown();
-			// alert(pre_popId);
+			
 			popNow = num;
 
 		}else{
@@ -29,33 +29,37 @@ $(function(){
 			$('#img'+num+'_m').css('display','none');
 			$('#img'+num+'_c').css('display','block');
 
+
 			var noiseName;
 			switch(num){
-				case 1:
-				noiseName = "car_noise";
+				case '1':
+				noiseName = 'car_noise';
 				break;
 
-				case 2:
-				noiseName = "crowds_noise";
+				case '2':
+				noiseName = 'crowds_noise';
 				break;
 
-				case 3:
-				noiseName = "human_noise";
+				case '3':
+				noiseName = 'human_noise';
 				break;
 
-				case 4:
-				noiseName = "animal_noise";
+				case '4':
+				noiseName = 'animal_noise';
 				break;
 
-				case 5:
-				noiseName = "construction_noise";
+				case '5':
+				noiseName = 'construction_noise';
 				break;
 
-				case 6:
-				noiseName = "rain_noise";
+				case '6':
+				noiseName = 'weather_noise';
+				break;
 			}
+			alert(noiseName);
 
 			setMarkerHere(noiseName);
+			sendNoise(noiseName);
 		}
 		
 		$('#playIcon'+popNow).css('display','none');

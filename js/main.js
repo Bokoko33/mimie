@@ -29,7 +29,7 @@ function init1() {
         maxZoom: 20,
     }).addTo(map_101);
 
-    var noiseName = ["car_noise","human_noise","crowds_noise","animal_noise","construction_noise","rain_noise"];
+    var noiseName = ["car_noise","human_noise","crowds_noise","animal_noise","construction_noise","weather_noise"];
     for(var i = 0; i < noiseName.length; i++){
     	takeOutData(noiseName[i]);
     }
@@ -57,7 +57,6 @@ function init1() {
     }
     map_101.addControl(control);
 
-
 }
 function takeOutData(noiseName){
   	var database = firebase.database();
@@ -75,7 +74,7 @@ function takeOutData(noiseName){
 	    	markCol = 'green';
 	    }else if(noiseName == 'construction_noise'){
 	    	markCol = 'purple';
-	    }else if(noiseName == 'rain_noise'){
+	    }else if(noiseName == 'weather_noise'){
 	    	markCol = 'violet';
 	    }
 	    snapshot.forEach(function(children) {
@@ -109,15 +108,16 @@ function setMarkerHere(noiseTag){
 		snapshot.forEach(function(children) {
 	        //children.val().userIdとかで必要な値を取ればOK
 	        if(children.val().thisLatitude == thisLatitude && children.val().thisLongitude == thisLongitude){
-	        	marker.setMap(null);
+                map_101.removeLayer(marker);
+	        	// marker.setMap(null);
 	        }
 	    });
 	    // noiseLabel.set({});
 	});
 
 	// sendNoise(noiseName);
-	navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-    .then(handleSuccess);
+	// navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+ //    .then(handleSuccess);
 }
 
 function getThisAddress(position){
@@ -131,30 +131,27 @@ function getThisAddress(position){
 var audioData = []; // 録音データ
 var bufferSize =1024;
 
-var AudioContext = window.AudioContext          // Default
-              || window.webkitAudioContext;  // Safari and old versions of Chrome
-this.audioContext = new AudioContext();
-
-var context = new AudioContext();
-
+var AudioContext;  // Safari and old versions of Chrome
+this.audioContext;
+var context;
 
     //マイク機能の使用許可が出たときの処理
 function handleSuccess(stream) {
 
     var source = context.createMediaStreamSource(stream);
-
+    console.log(source);
     //処理を行うプロセッサーを出力先とするために作成する
     var processor = context.createScriptProcessor(bufferSize,1,1);
     //直接destinationに繋ぐとスピーカーからそのまま音が出てしまう
 
     setTimeout(function () {
+
         source.connect(processor);
         processor.connect(context.destination);
     }, 1000);
-    // source.connect(processor);
-    // processor.connect(context.destination);
 
-            //1024bitのバッファサイズに達するごとにaudioDataにデータを追加する
+
+    //1024bitのバッファサイズに達するごとにaudioDataにデータを追加する
     processor.onaudioprocess = function(e){
 
         var input = e.inputBuffer.getChannelData(0);
@@ -180,11 +177,15 @@ function handleSuccess(stream) {
 };
 
 function sendNoise(nn){
+    noiseName = nn;
+    AudioContext = window.AudioContext          // Default
+              || window.webkitAudioContext;  // Safari and old versions of Chrome
+    this.audioContext = new AudioContext();
+
+    context = new AudioContext();
         //マイクデバイスの利用許可の確認を行う
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
     .then(handleSuccess);
-
-    noiseName = nn;
 }
 
     //wavファイルを作成する
@@ -245,10 +246,18 @@ function exportWAV(audioData) {
         //できあがったwavデータをBlobにする
     var audioBlob = new Blob([dataview], { type: 'audio/wav' });
 
+    var downloadLink = document.getElementById('download');
+        //BlobへのアクセスURLをダウンロードリンクに設定する
+    downloadLink.href = URL.createObjectURL(audioBlob);
+    downloadLink.download = 'test.wav';
+
+
+
     sendNoiseSound(audioBlob);
 };
 function sendNoiseSound (audioBlob){
     var storageRef = firebase.storage().ref("/noise/"+ noiseName + "/" + thisLatitude + "/" + thisLongitude);
+    // var storageRef = firebase.storage().ref();
 
     storageRef.put(audioBlob).then(function(snapshot) {
         console.log('Uploaded a blob or file!');
