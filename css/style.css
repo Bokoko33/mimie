@@ -35,17 +35,19 @@ header p{
 }
 
 #opening{
+	width: 100%;
+	height: 80%;
 	position: fixed;
     position: absolute;
-    left: 50%;
-    margin-left: -512px;
-
+    left:0px;
+    top:10%;
+    object-fit: cover;
     overflow: hidden;
 }
 #mask{
 	position: absolute;
 	width: 100%;
-	height: 33%;
+	height: 31%;
 	left: 0;
 	bottom: 0;
 	background-color: white; 
