@@ -1,6 +1,16 @@
 var popNow; //今開いているポップの番号
 
 $(function(){
+	//オープニングムービー
+	var video = $('#opening').get(0);
+	video.play();
+
+	$(video).on('ended',function(){
+		$('header,footer,.main').fadeIn(2000);
+		$('#opening,#mask').remove();  
+	})
+
+
 
 	// ボタンを押して再生、２回目以降はpopupが出る
 	$('.main button').click(function(){
@@ -108,7 +118,11 @@ $(function(){
 		$('#L-off').css('display','block');
 		$('#R-on').css('display','block');
 		$('#R-off').css('display','none');
+
+		$('body,html').animate({
+			scrollTop:0},0);
 	});
+
 });
 
 
