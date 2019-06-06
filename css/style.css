@@ -1,6 +1,8 @@
 *{
 	margin:0 auto;
 	font-family: "Helvetica Neue";
+	-webkit-appearance: none;
+
 }
 
 html,body{
