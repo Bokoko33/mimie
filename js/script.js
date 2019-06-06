@@ -2,10 +2,7 @@ var popNow; //今開いているポップの番号
 
 $(function(){
 	//オープニングムービー
-	var video = $('#opening').get(0);
-	video.play();
-
-	$(video).on('ended',function(){
+	$('#opening').on('ended',function(){
 		$('header,footer,.main').fadeIn(2000);
 		$('#opening,#mask').remove();  
 	})
