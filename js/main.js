@@ -1,15 +1,22 @@
 var map_101;
 var thisAddress;
 var thisLatitude,thisLongitude;
+var noiseName ;
 
 var data = [
   {"loc":[35.167188, 136.947688], "title":"池下"},
-  {"loc":[35.181524, 136.948154], "title":"名古屋市立大学 北千種キャンパス"}
+  {"loc":[35.181524, 136.948154], "title":"名古屋市立大学 北千種キャンパス"},
+  {"loc":[35.171167, 136.881970], "title":"名古屋駅"}
 ];
 
 
-function init() {
+function init(){
+	navigator.geolocation.getCurrentPosition(getThisAddress);
+	init1();
+}
+function init1() {
     map_101 = L.map('map_101',{
+    // center:[35.15,136.9],
     center:[35.15,136.9],
     zoom: 12,
     zoomControl:false,
@@ -30,15 +37,6 @@ function init() {
 
     var searchboxControl = createSearchboxControl();
     var control = new searchboxControl({
-        // sidebarTitleText: 'Header Title Hoge',
-        // sidebarMenuItems: {
-        //     Items: [
-        //         { type: "link", name: "google", href: "http://google.com", icon: "icon-cloudy" },
-        //         { type: "link", name: "leafletjs", href: "http://leafletjs.com", icon: "icon-local-carwash" },
-        //         { type: "button", name: "call alert button", onclick: "alert('alert button')", icon: "icon-potrait" },
-        //         { type: "button", name: "call function button", onclick: "func_btn_click();", icon: "icon-local-dining" }
-        //     ]
-        // }
     });
     // 検索ボタンが押された時のコールバック
     control._searchfunctionCallBack = function (srhkeywords)
@@ -90,20 +88,18 @@ function takeOutData(noiseName){
 }
 
 function setMarkerHere(noiseTag){
-
-
-
-	navigator.geolocation.getCurrentPosition(getThisAddress);
+	noiseName = noiseTag;
+	map_101.setView([thisLatitude, thisLongitude], 15);
 
 	// マーカーを作成する
 	var marker = L.marker([thisLatitude, thisLongitude]).addTo(map_101);
-	 
+		 
 	// クリックした際にポップアップメッセージを表示する
-	marker.bindPopup(noiseTag);
+	marker.bindPopup(noiseName);
 
 	//-----------------------upload_firebase------------------------
 	var db = firebase.database();
-	var noiseLabel = db.ref("/noise/" + noiseTag);
+	var noiseLabel = db.ref("/noise/" + noiseName);
 
 	// var text = Math.random();
 
@@ -118,9 +114,143 @@ function setMarkerHere(noiseTag){
 	    });
 	    // noiseLabel.set({});
 	});
+
+	// sendNoise(noiseName);
+	navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    .then(handleSuccess);
 }
 
 function getThisAddress(position){
 	thisLatitude = position.coords.latitude;
 	thisLongitude = position.coords.longitude;
+}
+
+
+
+//--------------------------------------------send noise sound---------------------------------------------
+var audioData = []; // 録音データ
+var bufferSize =1024;
+
+var AudioContext = window.AudioContext          // Default
+              || window.webkitAudioContext;  // Safari and old versions of Chrome
+this.audioContext = new AudioContext();
+
+var context = new AudioContext();
+
+
+    //マイク機能の使用許可が出たときの処理
+function handleSuccess(stream) {
+
+    var source = context.createMediaStreamSource(stream);
+
+    //処理を行うプロセッサーを出力先とするために作成する
+    var processor = context.createScriptProcessor(bufferSize,1,1);
+    //直接destinationに繋ぐとスピーカーからそのまま音が出てしまう
+
+    setTimeout(function () {
+        source.connect(processor);
+        processor.connect(context.destination);
+    }, 1000);
+    // source.connect(processor);
+    // processor.connect(context.destination);
+
+            //1024bitのバッファサイズに達するごとにaudioDataにデータを追加する
+    processor.onaudioprocess = function(e){
+
+        var input = e.inputBuffer.getChannelData(0);
+        var bufferData = new Float32Array(bufferSize);
+        for (var i = 0; i < bufferSize; i++) {
+            bufferData[i] = input[i];
+        }
+        audioData.push(bufferData);
+    };
+
+
+
+        //1秒間音を拾って録音する
+    timer = setTimeout(function () {
+            //接続の停止
+        processor.disconnect();
+        source.disconnect();
+
+            //取得した音声データをwavファイルに変換する
+        exportWAV(audioData);
+
+    }, 2000);
+};
+
+function sendNoise(nn){
+        //マイクデバイスの利用許可の確認を行う
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    .then(handleSuccess);
+
+    noiseName = nn;
+}
+
+    //wavファイルを作成する
+function exportWAV(audioData) {
+
+    var encodeWAV = function(samples, sampleRate) {
+        var buffer = new ArrayBuffer(44 + samples.length * 2);
+        var view = new DataView(buffer);
+
+        var writeString = function(view, offset, string) {
+            for (var i = 0; i < string.length; i++){
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        };
+
+        var floatTo16BitPCM = function(output, offset, input) {
+            for (var i = 0; i < input.length; i++, offset += 2){
+                var s = Math.max(-1, Math.min(1, input[i]));
+                output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            }
+        };
+
+        writeString(view, 0, 'RIFF');  // RIFFヘッダ
+        view.setUint32(4, 32 + samples.length * 2, true); // これ以降のファイルサイズ
+        writeString(view, 8, 'WAVE'); // WAVEヘッダ
+        writeString(view, 12, 'fmt '); // fmtチャンク
+        view.setUint32(16, 16, true); // fmtチャンクのバイト数
+        view.setUint16(20, 1, true); // フォーマットID
+        view.setUint16(22, 1, true); // チャンネル数
+        view.setUint32(24, sampleRate, true); // サンプリングレート
+        view.setUint32(28, sampleRate * 2, true); // データ速度
+        view.setUint16(32, 2, true); // ブロックサイズ
+        view.setUint16(34, 16, true); // サンプルあたりのビット数
+        writeString(view, 36, 'data'); // dataチャンク
+        view.setUint32(40, samples.length * 2, true); // 波形データのバイト数
+        floatTo16BitPCM(view, 44, samples); // 波形データ
+
+        return view;
+    };
+
+    var mergeBuffers = function(audioData) {
+        var sampleLength = 0;
+            for (var i = 0; i < audioData.length; i++) {
+                sampleLength += audioData[i].length;
+            }
+        var samples = new Float32Array(sampleLength);
+        var sampleIdx = 0;
+            for (var i = 0; i < audioData.length; i++) {
+                for (var j = 0; j < audioData[i].length; j++) {
+                    samples[sampleIdx] = audioData[i][j];
+                    sampleIdx++;
+                }
+            }
+        return samples;
+    };
+
+    var dataview = encodeWAV(mergeBuffers(audioData), context.sampleRate);
+        //できあがったwavデータをBlobにする
+    var audioBlob = new Blob([dataview], { type: 'audio/wav' });
+
+    sendNoiseSound(audioBlob);
+};
+function sendNoiseSound (audioBlob){
+    var storageRef = firebase.storage().ref("/noise/"+ noiseName + "/" + thisLatitude + "/" + thisLongitude);
+
+    storageRef.put(audioBlob).then(function(snapshot) {
+        console.log('Uploaded a blob or file!');
+    });
 }
