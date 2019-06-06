@@ -8,8 +8,16 @@
 	    <link rel="stylesheet" href="css/style.css" type="text/css" />
 	    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 
-	    <script src="https://code.jquery.com/jquery-1.12.1.js"></script>
-        <script src="https://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	    <!-- <script src="https://code.jquery.com/jquery-1.12.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.8.24/jquery-ui.js"></script> -->
+
+        <!-- plugin -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="crossorigin=""></script>
+
+        <script src="js/leaflet.sprite.js"></script>
 	    
         <link href="css/searchbox.css" rel="stylesheet" />
         <script src="js/leaflet.customsearchbox.js"></script>
@@ -18,16 +26,9 @@
 	    <!-- favicon -->
 	    <link rel="icon" type="image/x-icon" href="favicons/favicon.ico">
 		<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">　
-
 	    
-	    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-
-	    <!-- plugin -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="crossorigin=""></script>
-
+	    <!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script> -->
        
-
 
 	    <!-- firebase周り -->
 		<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
@@ -56,9 +57,10 @@
 	<body onload="init()">
 		<!-- オープ二ング -->
 		<!-- 1280*720の80% -->
-		<video id="opening" src="movie/movielogo.mp4" playsinline muted autoplay ></video>
-		<div id="mask"></div>
-
+		<div class="opening">
+			<video id="movielogo" src="movie/movielogo.mp4" playsinline muted autoplay ></video>
+			<div id="mask"></div>
+		</div>
 		<header>
 			<p id="noise-cancel">Noise Cancel</p>
 			<p id="noise-map">Noise Map</p>
@@ -161,7 +163,7 @@
 			</button>
 		</footer>
 	</body>
-	<script src="js/leaflet.sprite.js"></script>
+	
 	
 	<script type="text/javascript" src= "js/script.js"></script>
 </html>

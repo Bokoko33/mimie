@@ -2,9 +2,12 @@ var popNow; //今開いているポップの番号
 
 $(function(){
 	//オープニングムービー
-	$('#opening').on('ended',function(){
-		$('header,footer,.main').fadeIn(2000);
-		$('#opening,#mask').remove();  
+	$('#movielogo').on('ended',function(){
+		// $('header,footer,.main').fadeIn(2000);
+		$('#map_101').css('display','none'); //とりあえず読み込んで後から非表示
+		$('.opening').fadeOut(2000);
+
+		// $('#opening,#mask').remove();  
 	});
 
 
@@ -56,7 +59,7 @@ $(function(){
 				noiseName = 'weather_noise';
 				break;
 			}
-			alert(noiseName);
+			// alert(noiseName);
 
 			setMarkerHere(noiseName);
 			sendNoise(noiseName);
