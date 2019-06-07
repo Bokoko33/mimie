@@ -67,15 +67,15 @@ function takeOutData(noiseName){
 	    if(noiseName == 'car_noise'){
 	    	markCol = 'blue';
 	    }else if(noiseName == 'human_noise'){
-	    	markCol = 'red';
+	    	markCol = 'yellow';
 	    }else if(noiseName == 'crowds_noise'){
-	    	markCol = 'orange';
+	    	markCol = 'purple';
 	    }else if(noiseName == 'animal_noise'){
 	    	markCol = 'green';
 	    }else if(noiseName == 'construction_noise'){
-	    	markCol = 'purple';
+	    	markCol = 'red';
 	    }else if(noiseName == 'weather_noise'){
-	    	markCol = 'violet';
+	    	markCol = 'darkcyan';
 	    }
 	    snapshot.forEach(function(children) {
 	        //children.val().userIdとかで必要な値を取ればOK
