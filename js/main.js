@@ -246,10 +246,10 @@ function exportWAV(audioData) {
         //できあがったwavデータをBlobにする
     var audioBlob = new Blob([dataview], { type: 'audio/wav' });
 
-    var downloadLink = document.getElementById('download');
-        //BlobへのアクセスURLをダウンロードリンクに設定する
-    downloadLink.href = URL.createObjectURL(audioBlob);
-    downloadLink.download = 'test.wav';
+    // var downloadLink = document.getElementById('download');
+    //     //BlobへのアクセスURLをダウンロードリンクに設定する
+    // downloadLink.href = URL.createObjectURL(audioBlob);
+    // downloadLink.download = 'test.wav';
 
 
 
